@@ -1,0 +1,13 @@
+{
+    "id": "error-12345",
+    "name": "Error Event",
+    "timestamp": "2025-05-02T14:00:00Z",
+    "body": {
+      "error_message": "Unable to process order",
+      "original_event": {
+        "order_id": "12345",
+        "customer_id": "CUST-001"
+      }
+    }
+  }
+  

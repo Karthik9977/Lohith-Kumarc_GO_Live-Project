@@ -1,0 +1,94 @@
+services:
+  kafka:
+    image: bitnami/kafka:3.6
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./kafka/config/server.properties:/bitnami/kafka/config/server.properties
+      - ./kafka/data:/bitnami/kafka/data
+    environment:
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
+      - KAFKA_KRAFT_CLUSTER_ID=kraft-cluster-1
+    networks:
+      - app-net
+
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server kafka:9092 --list || exit 1"]
+      interval: "10s"
+      timeout: "5s"
+      retries: 10
+      start_period: "15s"
+
+ 
+
+  inventory-consumer:
+    build: ./inventory-consumer
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: always
+    networks:
+      - app-net
+    environment:
+      - KAFKA_BROKER=kafka:9092
+    command: ["sh", "-c", "sleep 10 && ./inventory-consumer"]
+
+
+  notification-consumer:
+    build: ./notification-consumer
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: always
+    networks:
+      - app-net
+    environment:
+      - KAFKA_BROKER=kafka:9092
+    command: ["sh", "-c", "sleep 10 && ./notification-consumer"]
+
+
+  warehouse-consumer:
+    build: ./warehouse-consumer
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: always
+    networks:
+      - app-net
+    environment:
+      - KAFKA_BROKER=kafka:9092
+    command: ["sh", "-c", "sleep 10 && ./warehouse-consumer"]
+
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - app-net
+    environment:
+      - KAFKA_BROKER=kafka:9092
+
+
+  shipper-consumer:
+    build: ./shipper-consumer
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: always
+    networks:
+      - app-net
+    environment:
+      - KAFKA_BROKER=kafka:9092
+    command: ["sh", "-c", "sleep 10 && ./shipper-consumer"]
+    
+
+networks:
+  app-net:
+    driver: bridge

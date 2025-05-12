@@ -1,0 +1,14 @@
+{
+  "order_id": "ORD001",
+  "customer_id": "CUST001",
+  "items": [
+    {
+      "sku": "MASK001",
+      "quantity": 10
+    },
+    {
+      "sku": "GLOVE002",
+      "quantity": 5
+    }
+  ]
+}

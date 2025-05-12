@@ -1,0 +1,11 @@
+{
+    "id": "order-12345-confirmed",
+    "name": "Order Confirmed",
+    "timestamp": "2025-05-02T12:30:00Z",
+    "body": {
+      "order_id": "12345",
+      "status": "confirmed",
+      "confirmation_time": "2025-05-02T12:30:00Z"
+    }
+  }
+  

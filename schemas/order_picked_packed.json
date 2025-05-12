@@ -1,0 +1,11 @@
+{
+    "id": "order-12345-picked",
+    "name": "Order Picked and Packed",
+    "timestamp": "2025-05-02T13:00:00Z",
+    "body": {
+      "order_id": "12345",
+      "status": "picked",
+      "packed_time": "2025-05-02T13:00:00Z"
+    }
+  }
+  
