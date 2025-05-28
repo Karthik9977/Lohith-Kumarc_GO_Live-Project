@@ -13,7 +13,7 @@ import (
 
 func PublishOrderEvent(event model.Order) {
 	writer := kafka.NewWriter(kafka.WriterConfig{
-		Brokers:      []string{"localhost:9092"},
+		Brokers:      []string{"localhost:9094"},
 		Topic:        "order-received",
 		RequiredAcks: 1,
 	})
